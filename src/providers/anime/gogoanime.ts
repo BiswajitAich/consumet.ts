@@ -97,7 +97,7 @@ class Gogoanime extends AnimeParser {
         .text()
         .trim()
         .split('Released: ')[1];
-      animeInfo.description = $('div.anime_info_body_bg > div:nth-child(6)')
+      animeInfo.description = $('div.anime_info_body_bg > div.description')
         .text()
         .trim()
         .replace('Plot Summary: ', '');
@@ -130,8 +130,9 @@ class Gogoanime extends AnimeParser {
         .replace('Other name: ', '')
         .replace(/;/g, ',');
 
-      $('div.anime_info_body_bg > p:nth-child(7) > a').each((i, el) => {
-        animeInfo.genres?.push($(el).attr('title')!.toString());
+      animeInfo.genres = [];
+      $('p.type > span:contains(Genre)').nextAll('a').each((i, el) => {
+        animeInfo.genres.push($(el).text());
       });
 
       const ep_start = $('#episode_page > li').first().find('a').attr('ep_start');
